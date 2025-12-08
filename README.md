@@ -22,7 +22,27 @@ Platform is live on Streamlit!
 
 ## Datasets and citation
 
-...
+The datasets for this project can be found mainly at [Kaggle](https://www.kaggle.com/). I have used different datasets for different purposes, mainly the two domains of Machine Learning and a Search/Lookup functionality of data representation and visualisation.
+
+1. [Young's Modulus of Metals](https://www.kaggle.com/datasets/kanchana1990/youngs-modulus-of-metals) dataset for gathering and training the ML model to perform a regression task on predicting the potential young's modulus of metals given the following input parameters:
+  - Density (g/cm³)
+  - Hardness (BHN)
+  - Tensile Strength (MPa)
+  - Yield Strength (MPa)
+  - Elongation (%)
+  - Poisson’s Ratio
+  - Hardness (HV)
+  - Shear Modulus (GPa)
+
+2. [RCSB_PDB Human Macromolecular Structure Dataset](https://www.kaggle.com/datasets/samiraalipour/rcsb-pdb-macromolecular-structure-dataset/data) for a protein structure database, used in the Oligomeric State Prediction task. This is a multi-task supervised learning model that performs classification and regression simultaneously to predict the oligomeric state (monomer, dimer, trimer, etc.) for a protein, given the following features of a protein:
+  - Number of Chains: The number of distinct chains in the protein structure.
+  - Helix Count: The number of alpha helices in the protein structure.
+  - Coil Count: The number of coil (random coil) regions in the protein structure.
+  - Molecular Weight per Deposited Model: The molecular weight of the entire protein structure, including all chains.
+  - Stoichiometry: The ratio of components in the protein assembly.
+
+3. 
+
 
 ---
 

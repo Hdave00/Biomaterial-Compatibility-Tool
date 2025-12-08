@@ -1,7 +1,6 @@
 # utils/ml_pipelines/youngs_modulus_predictor.py
 """
-Pipeline for predicting Young's modulus (or related mechanical properties)
-from alloy elemental compositions.
+Physics-assisted machine learning model for completing Young’s modulus from partial mechanical descriptors.
 
 Dataset: Located under /data/alloy_properties.csv
 
@@ -55,26 +54,34 @@ log = logging.getLogger(__name__)
 
 # Utility functions
 def extract_symbol(col_name):
+
     """Extract element symbol from strings like 'Cerium (Ce)Ce' or leave unchanged."""
+
     m = re.search(r"\(([^)]+)\)", col_name)
     return m.group(1) if m else col_name.strip()
 
 
 def rename_columns(df):
+
     """Standardize columns to element symbols and simpler property names."""
+
     rename_map = {}
+
     for col in df.columns:
+
         if 'Ultimate' in col:
             rename_map[col] = 'UTS'
         elif 'Liquidus' in col:
             rename_map[col] = 'Liquidus'
         else:
             rename_map[col] = extract_symbol(col)
+
     return df.rename(columns=rename_map)
 
 
 # Load + Preprocess Dataset
 def load_and_prepare_data(csv_path):
+
     """
     Load unified materials dataset, clean columns, handle duplicates,
     and prepare numeric features for Youngs modulus prediction.
@@ -136,7 +143,9 @@ def load_and_prepare_data(csv_path):
 
 # Model Training + Evaluation
 def train_models(X, y):
-    """Train KNN and RandomForest regressors, return best one."""
+
+    """ Train KNN and RandomForest regressors, return best one. """
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     scaler = StandardScaler()
@@ -176,7 +185,9 @@ FEATURE_PATH = "models/youngs_modulus_features.json"
 
 
 def save_model(model, scaler, feature_cols):
+
     """Save model, scaler, and feature list to /models directory."""
+
     os.makedirs("models", exist_ok=True)
     joblib.dump(model, MODEL_PATH)
     if scaler is not None:

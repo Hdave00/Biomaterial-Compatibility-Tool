@@ -163,6 +163,104 @@ def predict_youngs_modulus(model_bundle, input_dict):
     return float(prediction[0])
 
 
+# -------------------------------
+# TENSILE STRENGTH MODEL LOADER
+# -------------------------------
+
+def load_tensile_strength_model(model_type="mlp"):
+    """
+    Loads tensile strength prediction models.
+
+    model_type:
+        - "mlp" -> loads tensile_mlp_model.keras + scalers
+        - "rf"  -> loads tensile_rf_model.pkl
+    """
+
+    feature_path = os.path.join(MODEL_REGISTRY, "tensile_features.json")
+
+    if model_type == "mlp":
+        model_path = os.path.join(MODEL_REGISTRY, "tensile_mlp_model.keras")
+        x_scaler_path = os.path.join(MODEL_REGISTRY, "tensile_x_scaler.pkl")
+        y_scaler_path = os.path.join(MODEL_REGISTRY, "tensile_y_scaler.pkl")
+
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("Tensile MLP model not found in models/")
+
+        model = tf.keras.models.load_model(model_path)
+        x_scaler = joblib.load(x_scaler_path)
+        y_scaler = joblib.load(y_scaler_path)
+
+    elif model_type == "rf":
+        model_path = os.path.join(MODEL_REGISTRY, "tensile_rf_model.pkl")
+
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("Tensile RF model not found in models/")
+
+        model = joblib.load(model_path)
+        x_scaler = None
+        y_scaler = None
+
+    else:
+        raise ValueError("model_type must be 'mlp' or 'rf'")
+
+    with open(feature_path) as f:
+        feature_cols = json.load(f)
+
+    return {
+        "model": model,
+        "x_scaler": x_scaler,
+        "y_scaler": y_scaler,
+        "features": feature_cols,
+        "model_type": model_type
+    }
+
+
+# TENSILE STRENGTH PREDICTOR
+def predict_tensile_strength(model_bundle, input_dict):
+
+    """
+    Predicts:
+        - Su -> Ultimate Tensile Strength
+        - Sy -> Yield Strength
+
+    Returns:
+        dict -> {"Su": value, "Sy": value}
+    """
+
+    model = model_bundle["model"]
+    x_scaler = model_bundle.get("x_scaler")
+    y_scaler = model_bundle.get("y_scaler")
+    feature_cols = model_bundle.get("features", [])
+    model_type = model_bundle.get("model_type")
+
+    # Build DataFrame EXACTLY like during training
+    X_input = pd.DataFrame(
+        [[input_dict.get(col, 0.0) for col in feature_cols]],
+        columns=feature_cols
+    )
+
+    # Scale X if MLP
+    if x_scaler is not None:
+        X_input_scaled = x_scaler.transform(X_input)
+    else:
+        X_input_scaled = X_input.values
+
+    # Predict
+    y_pred = model.predict(X_input_scaled)
+
+    # Inverse scale if MLP
+    if y_scaler is not None:
+        y_pred = y_scaler.inverse_transform(y_pred)
+
+    Su = float(y_pred[0][0])
+    Sy = float(y_pred[0][1])
+
+    return {
+        "Su": Su,
+        "Sy": Sy
+    }
+
+
 # Load the models from the path, into a functional dict
 QSAR_MODELS = {
     "regressor": Path("models/qsar_regressor_rf.pkl"),

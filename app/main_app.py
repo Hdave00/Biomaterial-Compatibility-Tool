@@ -21,12 +21,14 @@ def run_ml_app():
         load_youngs_modulus_model,
         load_qsar_model,
         load_oligomeric_state_model,
+        load_tensile_strength_model,
         # load_binding_model,
         predict_polymer_tg,
         predict_youngs_modulus,
         predict_qsar_toxicity,
-        # predict_binding,
         predict_oligomeric_state,
+        predict_tensile_strength,
+        # predict_binding,
     )
 
 
@@ -46,6 +48,9 @@ def run_ml_app():
 
     # This model was acting weird with the session_st caching so im loading it separately for now
     oligomer_model = load_oligomeric_state_model()
+
+    # Loading tensile strength model for cacheless use 
+    tensile_strength_model = load_tensile_strength_model()
 
     # NOTE This is for UI debugging
     #st.text("=== Oligomeric state model bundle ===")
@@ -202,6 +207,7 @@ def run_ml_app():
         "Young's Modulus Predictor",
         "QSAR Toxicity Predictor",
         "Oligomeric State Predictor",
+        "Tensile Strength Predictor",
         "Protein–Ligand Binding Predictor"
     ])
 
@@ -278,53 +284,32 @@ def run_ml_app():
 
         st.markdown("""
         <p style='font-size:1rem;'>
-        Predict Young’s Modulus (GPa) based on known <b>mechanical and thermal properties</b> of the material.
-        These features are derived from the unified materials dataset used during model training.
+        Physics-assisted machine learning model for completing Young’s modulus from partial mechanical descriptors.
         </p>
         """, unsafe_allow_html=True)
 
-        # We need more fields for calculating the Youngs modulus of a material
+        # ONLY the 4 features the model was trained on
         with st.form("youngs_modulus_form"):
             col1, col2 = st.columns(2)
 
             with col1:
                 density = st.number_input("Density (g/cm³)", min_value=0.0, max_value=25.0, value=7.8, step=0.1)
                 hardness = st.number_input("Hardness (BHN)", min_value=0.0, max_value=500.0, value=200.0, step=1.0)
-                tensile = st.number_input("Tensile Strength (MPa)", min_value=0.0, max_value=2500.0, value=400.0, step=10.0)
-                yield_strength = st.number_input("Yield Strength (MPa)", min_value=0.0, max_value=2000.0, value=250.0, step=10.0)
-                elongation = st.number_input("Elongation (%)", min_value=0.0, max_value=100.0, value=10.0, step=0.5)
 
             with col2:
                 poisson = st.number_input("Poisson’s Ratio", min_value=0.0, max_value=0.6, value=0.3, step=0.01)
-                hardness_hv = st.number_input("Hardness (HV)", min_value=0.0, max_value=2000.0, value=150.0)
                 shear_modulus = st.number_input("Shear Modulus (GPa)", min_value=0.0, max_value=1000.0, value=80.0)
-
-                # ----NOTE---- 
-                # These fields do NOT go into the prediction, maybe with a future dataset we might be able to make use of these example fields
-                    # fracture_toughness = st.number_input("Fracture Toughness (MPa√m)", min_value=0.0, max_value=200.0, value=50.0, step=1.0)
-                    # melting_point = st.number_input("Melting Point (°C)", min_value=0.0, max_value=4000.0, value=1500.0, step=10.0)
-                    # thermal_cond = st.number_input("Thermal Conductivity (W/mK)", min_value=0.0, max_value=1000.0, value=100.0, step=1.0)
-                    # specific_heat = st.number_input("Specific Heat (J/g·K)", min_value=0.0, max_value=10.0, value=0.5, step=0.01)
-
-            # NOTE ---- same goes for this feild, i do not currently have data to predict based on one-hot encoding for different types pf materials and 
-            # their youngs modulus. Maybe with a dataset in the future
-            # st.markdown("#### Material Type")
-            # material_type = st.selectbox("Select Material Type", ["Metal", "Ceramic", "Polymer", "Composite"])
 
             submitted = st.form_submit_button("Predict Young’s Modulus")
 
         if submitted:
 
-            # --- Only include features that exist in the training model ---
+            # STRICTLY MATCHES TRAINED FEATURE SET
             input_dict = {
+                "Shear_Modulus_GPa": shear_modulus,
+                "Poisson_Ratio": poisson,
                 "Density_gcm3": density,
                 "Hardness_BHN": hardness,
-                "Hardness_HV": hardness_hv,
-                "Tensile_Strength_MPa": tensile,
-                "Yield_Strength_MPa": yield_strength,
-                "Elongation_percent": elongation,
-                "Poisson_Ratio": poisson,
-                "Shear_Modulus_GPa": shear_modulus,
             }
 
             result = predict_youngs_modulus(youngs_model, input_dict)
@@ -333,7 +318,10 @@ def run_ml_app():
 
             # --- Summary table ---
             st.markdown("#### Input Summary")
-            st.dataframe(pd.DataFrame(input_dict.items(), columns=["Feature", "Value"]), use_container_width=True)
+            st.dataframe(
+                pd.DataFrame(input_dict.items(), columns=["Feature", "Value"]),
+                use_container_width=True
+            )
 
             # --- Comparison chart ---
             st.markdown("#### Comparison with Common Materials")
@@ -350,7 +338,7 @@ def run_ml_app():
             elif result < 70:
                 st.info("This modulus is typical for **light alloys or composites.**")
             elif result < 200:
-                st.success("This range indicates a **strong metallic alloy** (e.g., steel or titanium).")
+                st.success("This range indicates a **strong metallic alloy** (eg: steel or titanium)")
             else:
                 st.info("This modulus suggests a **ceramic or high-stiffness material.**")
 
@@ -486,8 +474,97 @@ def run_ml_app():
                     #st.text(X_scaled)
 
 
-    # NOTE-- Section not implemented yet!
+    # --- TENSILE STRENGTH ---
     with tabs[5]:
+        st.subheader("Tensile Strength Predictor (Su & Sy)")
+
+        st.markdown("""
+        <p style='font-size:1rem;'>
+        Physics-consistent neural network for predicting <b>Ultimate Tensile Strength (Su)</b> 
+        and <b>Yield Strength (Sy)</b> from elastic properties.
+        </p>
+        """, unsafe_allow_html=True)
+
+        # ONLY the 4 features the tensile model was trained on
+        with st.form("tensile_strength_form"):
+            col1, col2 = st.columns(2)
+
+            with col1:
+                youngs_modulus = st.number_input("Young’s Modulus E (GPa)", min_value=0.0, max_value=500.0, value=210.0, step=1.0)
+
+                poisson_ratio = st.number_input("Poisson’s Ratio μ", min_value=0.0, max_value=0.6, value=0.30, step=0.01)
+
+            with col2:
+                shear_modulus = st.number_input("Shear Modulus G (GPa)", min_value=0.0, max_value=300.0, value=80.0, step=1.0)
+
+                density = st.number_input("Density ρ (g/cm³)", min_value=0.1, max_value=25.0, value=7.85, step=0.01)
+
+            submitted_tensile = st.form_submit_button("Predict Tensile Strength")
+
+        # On submit button press, send input data to model
+        if submitted_tensile:
+
+            # STRICT FEATURE MATCH WITH TRAINING
+            input_dict = {
+                "E": youngs_modulus,
+                "G": shear_modulus,
+                "mu": poisson_ratio,
+                "Ro": density
+            }
+
+            # Invoke prediction function from src/inference/model_interface.py, pass in the var at top of file, and the data it was trained on
+            result = predict_tensile_strength(tensile_strength_model, input_dict)
+
+            Su = result["Su"]
+            Sy = result["Sy"]
+
+            # --- MAIN OUTPUT ---
+            st.success(
+                f"""
+                ### Prediction Results
+                - **Ultimate Tensile Strength (Su):** **{Su:.2f} MPa**
+                - **Yield Strength (Sy):** **{Sy:.2f} MPa**
+                """
+            )
+
+            # --- INPUT SUMMARY TABLE ---
+            st.markdown("#### Input Summary")
+            st.dataframe(
+                pd.DataFrame(input_dict.items(), columns=["Feature", "Value"]),
+                use_container_width=True
+            )
+
+            # --- COMPARISON BAR CHART ---
+            st.markdown("#### Comparison with Common Engineering Materials")
+
+            comparison_df = pd.DataFrame({
+                "Material": ["Predicted", "Mild Steel", "Aluminum", "Titanium", "Copper"],
+                "Ultimate Strength (MPa)": [Su, 400, 310, 900, 210],
+                "Yield Strength (MPa)": [Sy, 250, 275, 830, 70]
+            })
+
+            st.bar_chart(comparison_df.set_index("Material"), height=350)
+
+            # --- ENGINEERING INTERPRETATION ---
+            st.markdown("#### Engineering Interpretation")
+
+            if Su < 150:
+                st.warning("This material behaves like a **low-strength polymer or soft alloy**.")
+            elif Su < 400:
+                st.info("This region corresponds to **light structural alloys and aluminum-type materials**.")
+            elif Su < 800:
+                st.success("This is typical of **strong structural steels and engineering metals**.")
+            else:
+                st.info("This falls into **ultra-high strength alloys or titanium-grade materials**.")
+
+            if Sy / Su < 0.4:
+                st.warning("Low yield-to-ultimate ratio → **ductile failure behavior** expected.")
+            elif Sy / Su > 0.8:
+                st.info("High yield-to-ultimate ratio → **brittle or limited plastic deformation**.")
+
+
+    # NOTE-- Section not implemented yet!
+    with tabs[6]:
         st.subheader("Protein–Ligand Binding Predictor")
         st.markdown("Estimate whether a given ligand binds to a protein target structure.")
         st.markdown("Feature coming soon, not yet implemented.")
