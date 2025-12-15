@@ -86,7 +86,7 @@ def load_model_by_name(filename):
             return pickle.load(f), 'pickle'
 
 
-# Example loader for polymer Tg predictor (keras)
+# Loader for polymer Tg predictor (keras)
 def load_polymer_tg_model():
     model_obj, typ = load_model_by_name('polymer_tg_predictor_v1.keras')
     mean = np.load(os.path.join(MODEL_REGISTRY, 'polymer_tg_scaler_mean_v1.npy'))
@@ -101,7 +101,6 @@ def load_polymer_tg_model():
         'target_scale': scale,
         'meta': {'format': typ}
     }
-
 
 
 def predict_polymer_tg(model_bundle, smiles_str):
@@ -163,11 +162,9 @@ def predict_youngs_modulus(model_bundle, input_dict):
     return float(prediction[0])
 
 
-# -------------------------------
 # TENSILE STRENGTH MODEL LOADER
-# -------------------------------
-
 def load_tensile_strength_model(model_type="mlp"):
+    
     """
     Loads tensile strength prediction models.
 

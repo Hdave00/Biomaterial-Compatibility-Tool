@@ -425,6 +425,9 @@ def load_heas():
 def load_polymers():
     return load_dataset("master_data/polymer_lookup_data.csv")
 
+def load_rcsb_pdb_dataset():
+    return load_dataset("master_data/rcsb_pdb/RCSB_PDB_Macromolecular_Structure_Dataset_with_Structural_Features.csv")
+
 
 # -----------------------------
 # DOMAIN SEARCH RENDERING
@@ -601,6 +604,11 @@ def render_polymers(df):
 
         st.dataframe(df[mask], use_container_width=True)
 
+# TODO ---- Try to fit in the rscb dataset, check if the lookup works, then move all the rendering functions to another file and import them here for
+# separation of concerns 
+def render_rscb(df):
+    st.subheader()
+
 
 def render_property_comparison(df_local: Optional[pd.DataFrame], mp_df: Optional[pd.DataFrame], selected_name: str):
 
@@ -668,7 +676,6 @@ def run_selection_app():
 
     # Load local datasets lazily
     local_unified = load_dataset('master_data/unified_material_data.csv')
-
 
     # Local Search Section
     if tab_choice == 'Local Search':

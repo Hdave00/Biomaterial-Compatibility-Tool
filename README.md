@@ -12,6 +12,17 @@ A modern Streamlit-based biomaterials intelligence platform combining:
 
 This project is part of a larger effort to build an intelligent decision-support system for materials science and biomaterials engineering.
 
+It is meant to be a working prototype for a vision of merging the highly interconnected and interdisciplinary domains of Bioinformatics, Biofabrication and Biotechnology. Using the foundational principles of Material Science, Rheology, Biomedical Engineering, Machine Learning, Data Science/Data Modelling and Computer Engineering, the project aims to provide a link between rapid prototyping & research, and the eventual project structuring phase for ALL 3 primary domains by providing a platform that unifies a researcher/student/professional's workflow.
+This platform is being built from the ground up, taking into account the amount of time lost in pruning data, building models, querying multiple different platforms for the same purpose, having to create multiple online accounts and the hassle that comes in the world of research & academia to find a unified workflow for a specific domain, for researchers and students alike. 
+Think of it as different limbs of a single body, being able to have "minds of their own", rather than multiple different bodies inefficiently trying to communicate for one singular purpose. 
+
+By combining inter-related domains that are highly relevant and co-dependant on each of the 3 domains of Bioinformatics, Biofabrication/Biomaterial Research and Biotechnology, the platform is unified in its purpose to only provide the data, machine learning tools, journaling and data modelling/data visualisation related to those fields that are shaping our future in not only a theoretical sense, but a tangible way that aids humanity greatly through the combined efforts of many. 
+
+It comprises of being able to provide cleaned datasets for query and data visualization, machine learning models for predictions and live compatibility confirmations accross all 3 domains. 
+
+This is but a fraction of what those 3 "parent domains" are concerned with, there is much more to each one of those domains. For example, Biotechnology has sub domains in more than just the medical sense, the emergence of novel food sciences and sustainable advances in lab farming for better yeilds in the challenging climate we face today are also due to the immense efforts made by people in that field, and that domain too could be integrated in such a platform to streamline research and create relevant tools which could greatly aid that domain, if it was to be scaled up using a different framework.
+
+
 ---
 
 Platform is live on Streamlit!
