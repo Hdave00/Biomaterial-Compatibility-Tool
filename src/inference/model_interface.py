@@ -12,7 +12,7 @@ from pathlib import Path
 from src.ml_pipelines.shared_utils import generate_binding_features
 
 try:
-    # adjust this import if your package layout differs
+    # adjust import according to file structure/directory
     from src.ml_pipelines.shared_utils import load_smiles_to_fingerprints
 except Exception:
     # fallback if running as script from other cwd
@@ -20,7 +20,7 @@ except Exception:
 
 
 
-# fail gracefully if RDKit isn’t installed
+# fail gracefully if RDKit isnt installed
 try:
     from rdkit import Chem
     from rdkit.Chem import AllChem
