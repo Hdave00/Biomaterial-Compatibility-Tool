@@ -12,6 +12,7 @@ def run_ml_app():
     import os
     import numpy as np
 
+
     # Ensure src is accessible ---
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
@@ -31,6 +32,10 @@ def run_ml_app():
         # predict_binding,
     )
 
+
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+        st.rerun()
 
     # --- Load models once at startup ---
     @st.cache_resource
@@ -196,9 +201,8 @@ def run_ml_app():
 
 
     # Page config
-    st.set_page_config(page_title="Biomaterial ML Suite", layout="wide")
     st.title("Material and Protein ML Prediction Suite")
-    st.markdown("Choose a domain to begin exploring predictions and material insights.")
+    st.markdown("Choose a model to begin exploring predictions and material insights.")
 
     # --- Navigation ---
     tabs = st.tabs([
@@ -249,7 +253,7 @@ def run_ml_app():
             key="polymer_smiles"
         )
 
-        # When th predict button is pressed, show a spinnder animation for wait time, call the predict_polymer_tg function from model_interface.py
+        # When th predict button is pressed, show a spinner animation for wait time, call the predict_polymer_tg function from model_interface.py
         # and output the prediction below all the input fields, in its own metric box
         if st.button("Predict Tg", use_container_width=True, key="btn_poly_tg"):
             try:

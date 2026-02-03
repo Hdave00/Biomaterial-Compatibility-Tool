@@ -1,9 +1,13 @@
-# entry_app.py
+# streamlit_app.py
 import sys
 import streamlit as st
 import importlib
 
-st.set_page_config(page_title="Biomaterial and Bioinformatics Platform", layout="wide")
+st.set_page_config(page_title="Biomaterial and Material Science Platform", layout="wide")
+
+# Initialize navigation state ONCE
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
 # --- Custom CSS ---
 st.markdown("""
@@ -70,6 +74,32 @@ h4 { font-size: 1.8rem; font-weight: 500; color: #fefefe; }
     transition: all 0.3s ease;
     color: #ffffff;
 }
+            
+/* Make Streamlit containers look like your domain cards */
+.card {
+    border-radius: 25px;
+    padding: 2.5rem 2rem;
+    margin: 1rem 0.5rem;
+    text-align: center;
+    box-shadow: 0px 8px 30px rgba(0,0,0,0.35);
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0px 12px 40px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.08);
+}
+
+/* Left colored borders */
+.ml-card { border-left: 5px solid #3b82f6; }
+.selection-card { border-left: 5px solid #16a34a; }
+.hra-card { border-left: 5px solid #8b5cf6; }
+
 
 /* Module colors */
 .domain-section:nth-child(1) { border-left: 5px solid #3b82f6; }
@@ -136,7 +166,8 @@ h4 { font-size: 1.8rem; font-weight: 500; color: #fefefe; }
 .stAlert > div {
     font-size: 1.35rem !important; /* increase font size */
     line-height: 1.8 !important;
-
+}
+            
 /* --- Footer --- */
 .footer {
     text-align: center;
@@ -146,90 +177,128 @@ h4 { font-size: 1.8rem; font-weight: 500; color: #fefefe; }
     padding-bottom: 1rem;
     border-top: 1px solid rgba(255,255,255,0.15);
 }
+            
+/* ===== Streamlit Card Containers ===== */
+div[data-testid="stVerticalBlock"] > div.card-container {
+    border-radius: 25px;
+    padding: 2.5rem 2rem;
+    margin: 1rem 0.5rem;
+    text-align: center;
+    box-shadow: 0px 8px 30px rgba(0,0,0,0.35);
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+div[data-testid="stVerticalBlock"] > div.card-container:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0px 12px 40px rgba(0,0,0,0.5);
+    background: rgba(255,255,255,0.08);
+}
+
+/* Colored left borders */
+.ml-card { border-left: 5px solid #3b82f6; }
+.selection-card { border-left: 5px solid #16a34a; }
+.hra-card { border-left: 5px solid #8b5cf6; }
+
 </style>
 """, unsafe_allow_html=True)
 
-# --- Main Page ---
-st.markdown("<div class='main-container'>", unsafe_allow_html=True)
-st.title("Biomaterial and Bioinformatics Novel Platform")
-st.markdown("<p class='header-subtext'>Machine Learning-driven discovery, prediction, and selection of advanced biomaterials, unified in one pragmatic platform.</p>", unsafe_allow_html=True)
 
-# --- Domain Overview ---
-col1, col2, col3 = st.columns(3)
+if st.session_state.page == "home":
 
-# ML Module
-with col1:
-    st.markdown("<div class='domain-section'>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-title'>Machine Learning Module</div>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-desc'>Use pretrained ML models to predict key material properties, from mechanical strength to toxicity. Cut down in prototyping time.</div>", unsafe_allow_html=True)
-    if st.button("Enter ML Module", use_container_width=True, key="ml_btn"):
-        st.session_state.page = "ml"
+    st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+    st.title("Biomaterial and Material Science Novel Platform")
+    st.markdown("<p class='header-subtext'>Machine Learning-driven discovery, prediction, and selection of advanced biomaterials, unified in one pragmatic platform.</p>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        <div class='domain-section'>
+            <h4>Machine Learning Module</h4>
+            <p>Use pretrained ML models to predict key material properties, from mechanical strength to toxicity.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button("Enter ML Module", use_container_width=True):
+            st.session_state.page = "ml"
+            st.rerun()
+
+    with col2:
+        st.markdown("""
+        <div class='domain-section'>
+            <h4>Material Selection Module</h4>
+            <p>Browse, compare, and analyze materials using integrated property datasets.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button("Enter Selection Module", use_container_width=True):
+            st.session_state.page = "selection"
+            st.rerun()
+
+    with col3:
+        st.markdown("""
+        <div class='domain-section'>
+            <h4>Anatomy & Implant Visualizer</h4>
+            <p>Explore anatomical models and implant placement context.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button("Enter Anatomy Visualizer", use_container_width=True):
+            st.session_state.page = "hra"
+            st.rerun()
+        
+
+
+    # --- Coming Soon Section ---
+    st.markdown("<h2 style='text-align:center; margin-top:3rem;'>Coming Soon</h2>", unsafe_allow_html=True)
+    col3, col4, col5 = st.columns(3)
+
+    with col3:
+        st.markdown("<div class='domain-section'><h4>Simulation Suite</h4><p>Run mechanical and biocompatibility simulations to evaluate candidate materials.</p></div>", unsafe_allow_html=True)
+    with col4:
+        st.markdown("<div class='domain-section'><h4>Dataset Uploader</h4><p>Upload your own material datasets for custom ML model training.</p></div>", unsafe_allow_html=True)
+    with col5:
+        st.markdown("<div class='domain-section'><h4>Protein-Ligand binding prediction</h4><p>Predict protein ligand binding ability.</p></div>", unsafe_allow_html=True)
+
+    # --- Features Overview Accordion ---
+    st.markdown("<h2 style='text-align:center; margin-top:3rem;'>Features Overview</h2>", unsafe_allow_html=True)
+
+    with st.container():
+        feature_sections = {
+            "Machine Learning Module": "Predict material properties such as tensile strength, Young's modulus, and cytotoxicity using pretrained AI models.",
+            "Material Selection Module": "Browse, filter, and compare materials using integrated datasets and visualization tools.",
+            "Anatomy & Implant Visualizer": "Explore 3D anatomical models and understand implant placement in biological context.",
+            "Simulation Suite (Coming Soon)": "Run mechanical and biocompatibility simulations for candidate materials.",
+            "Dataset Uploader (Coming Soon)": "Upload custom material datasets to train personalized AI models.",
+            "Protein-Ligand Binding Predictor (Coming Soon)": "Predict binding affinity between proteins and ligands using structural features."
+        }
+
+        for feature_title, feature_desc in feature_sections.items():
+            with st.expander(feature_title, expanded=False):
+                st.write(feature_desc)
+                st.info("More details will be added here soon.")
+
+    # --- Footer ---
+    st.markdown("""
+    <div class='footer'>
+    &copy; 2025 Biomat project | Working prototype for scientific biomaterial exploration
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown("</div>", unsafe_allow_html=True)
-
-# Material Selection Module
-with col2:
-    st.markdown("<div class='domain-section'>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-title'>Material Selection Module</div>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-desc'>Browse, compare, and analyze materials using integrated property datasets and visualization tools for selection and optimization.</div>", unsafe_allow_html=True)
-    if st.button("Enter Selection Module", use_container_width=True, key="sel_btn"):
-        st.session_state.page = "selection"
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# Anatomy & Implant Visualizer
-with col3:
-    st.markdown("<div class='domain-section'>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-title'>Anatomy & Implant Visualizer</div>", unsafe_allow_html=True)
-    st.markdown("<div class='domain-desc'>Explore anatomically accurate 3D organs and cross-referenced ASCT+B tables to understand implant placement and biological context.</div>", unsafe_allow_html=True)
-    if st.button("Enter Anatomy Visualizer", use_container_width=True, key="hra_btn"):
-        st.session_state.page = "hra"
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Coming Soon Section ---
-st.markdown("<h2 style='text-align:center; margin-top:3rem;'>Coming Soon</h2>", unsafe_allow_html=True)
-col3, col4, col5 = st.columns(3)
-
-with col3:
-    st.markdown("<div class='domain-section'><h4>Simulation Suite</h4><p>Run mechanical and biocompatibility simulations to evaluate candidate materials.</p></div>", unsafe_allow_html=True)
-with col4:
-    st.markdown("<div class='domain-section'><h4>Dataset Uploader</h4><p>Upload your own material datasets for custom ML model training.</p></div>", unsafe_allow_html=True)
-with col5:
-    st.markdown("<div class='domain-section'><h4>Protein-Ligand binding prediction</h4><p>Predict protein ligand binding ability.</p></div>", unsafe_allow_html=True)
-
-# --- Features Overview Accordion ---
-st.markdown("<h2 style='text-align:center; margin-top:3rem;'>Features Overview</h2>", unsafe_allow_html=True)
-
-with st.container():
-    feature_sections = {
-        "Machine Learning Module": "Predict material properties such as tensile strength, Young's modulus, and cytotoxicity using pretrained AI models.",
-        "Material Selection Module": "Browse, filter, and compare materials using integrated datasets and visualization tools.",
-        "Anatomy & Implant Visualizer": "Explore 3D anatomical models and understand implant placement in biological context.",
-        "Simulation Suite (Coming Soon)": "Run mechanical and biocompatibility simulations for candidate materials.",
-        "Dataset Uploader (Coming Soon)": "Upload custom material datasets to train personalized AI models.",
-        "Protein-Ligand Binding Predictor (Coming Soon)": "Predict binding affinity between proteins and ligands using structural features."
-    }
-
-    for feature_title, feature_desc in feature_sections.items():
-        with st.expander(feature_title, expanded=False):
-            st.write(feature_desc)
-            st.info("More details will be added here soon.")
-
-# --- Footer ---
-st.markdown("""
-<div class='footer'>
-&copy; 2025 Biomat project | Working prototype for scientific biomaterial exploration
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Routing ---
-page = st.session_state.get("page", "home")
-if page == "ml":
-    module = importlib.import_module("app.main_app")
-    module.run_ml_app()
-elif page == "selection":
-    module = importlib.import_module("app.visualization")
-    module.run_selection_app()
-elif page == "hra":
-    module = importlib.import_module("app.human_atlas.hra_visualizer")
-    module.run_hra_visualizer()
+elif st.session_state.page == "ml":
+    import app.main_app as ml_app
+    ml_app.run_ml_app()
+
+elif st.session_state.page == "selection":
+    import app.visualization as vis_app
+    vis_app.run_selection_app()
+
+elif st.session_state.page == "hra":
+    import app.human_atlas.hra_visualizer as hra_app
+    hra_app.run_hra_visualizer()

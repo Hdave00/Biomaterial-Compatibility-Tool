@@ -10,6 +10,10 @@ def run_hra_visualizer():
     st.markdown("<div class='section'>", unsafe_allow_html=True)
     st.header("Human Reference Atlas Explorer")
 
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+        st.rerun()
+
     # Organ selection
     organ = st.selectbox(
         "Select an anatomical region:",
