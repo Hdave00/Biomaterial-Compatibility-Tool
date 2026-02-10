@@ -52,7 +52,7 @@ The datasets for this project can be found mainly at [Kaggle](https://www.kaggle
   - Molecular Weight per Deposited Model: The molecular weight of the entire protein structure, including all chains.
   - Stoichiometry: The ratio of components in the protein assembly.
 
-3. 
+3. [Materials and Their Mechanical Properties](https://www.kaggle.com/datasets/purushottamnawale/materials/data)
 
 
 ---
