@@ -1,5 +1,5 @@
 """
-Tensile & Yield Strength Prediction Pipeline (Su, Sy) — Corrected ANN
+Tensile & Yield Strength Prediction Pipeline (Su, Sy) - Corrected ANN
 
 Dataset:
 data/materials_data/material.csv

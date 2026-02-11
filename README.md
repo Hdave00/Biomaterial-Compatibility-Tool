@@ -16,7 +16,7 @@ It is meant to be a working prototype for a vision of merging the highly interco
 This platform is being built from the ground up, taking into account the amount of time lost in pruning data, building models, querying multiple different platforms for the same purpose, having to create multiple online accounts and the hassle that comes in the world of research & academia to find a unified workflow for a specific domain, for researchers and students alike. 
 Think of it as different limbs of a single body, being able to have "minds of their own", rather than multiple different bodies inefficiently trying to communicate for one singular purpose. 
 
-By combining inter-related domains that are highly relevant and co-dependant on each of the 3 domains of Bioinformatics, Biofabrication/Biomaterial Research and Biotechnology, the platform is unified in its purpose to only provide the data, machine learning tools, journaling and data modelling/data visualisation related to those fields that are shaping our future in not only a theoretical sense, but a tangible way that aids humanity greatly through the combined efforts of many. 
+By combining inter-related domains that are highly relevant and co-dependant on each of the 3 domains of Bioinformatics, Material Science Research and Biotechnology, the platform is unified in its purpose to only provide the data, machine learning tools, journaling and data modelling/data visualisation related to those fields that are shaping our future in not only a theoretical sense, but a tangible way that aids humanity greatly through the combined efforts of many.
 
 It comprises of being able to provide cleaned datasets for query and data visualization, machine learning models for predictions and live compatibility confirmations accross all 3 domains. 
 
@@ -52,7 +52,10 @@ The datasets for this project can be found mainly at [Kaggle](https://www.kaggle
   - Molecular Weight per Deposited Model: The molecular weight of the entire protein structure, including all chains.
   - Stoichiometry: The ratio of components in the protein assembly.
 
-3. [Materials and Their Mechanical Properties](https://www.kaggle.com/datasets/purushottamnawale/materials/data)
+3. [Materials and Their Mechanical Properties](https://www.kaggle.com/datasets/purushottamnawale/materials/data) is used to feed data to lookup table, and a machine learning model, the model learns to predict properties of a metal, given certain data points/parameters. 
+
+
+4. 
 
 
 ---
@@ -72,6 +75,9 @@ This module implements a fully automated **Quantitative Structure–Activity Rel
 
 **1 Architectural Overview**
 
+
+Full documentation:  
+**[See the QSAR Notebook](notebooks/qsar_docs.ipynb)**
 
 
 ---
