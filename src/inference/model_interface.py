@@ -27,13 +27,16 @@ try:
 except ImportError:
     Chem = AllChem = None
 
+# get models from the correct directory, then load the registry path for getting model parameters as json
 MODEL_REGISTRY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'models'))
 
 REGISTRY_PATH = os.path.join(MODEL_REGISTRY, 'registry.json')
 
+# load the models, and their json from the path
 with open(REGISTRY_PATH, 'r') as f:
     MODEL_MAP = json.load(f)
 
+# function to return the specific model path
 def _load_npy(path):
     return np.load(path, allow_pickle=True)
 
@@ -52,7 +55,9 @@ def _load_keras(path):
 
 
 def load_model_by_name(filename):
+
     """Unified loader by filename (basename or full path). Returns object + type."""
+
     path = filename if os.path.isabs(filename) else os.path.join(MODEL_REGISTRY, filename)
     if not os.path.exists(path):
         raise FileNotFoundError(path)
@@ -419,7 +424,7 @@ def predict_oligomeric_state(model_bundle, feature_dict):
 
 
 # -------------------------------
-# Protein-Ligand Binding Model NOTE -----> This is not yet implemented/ Its not work / skill issue, couldnt get it to work
+# Protein-Ligand Binding Model NOTE -----> This is not yet implemented/ Its not working / skill issue, couldnt get it to work
 # -------------------------------
 '''
 def load_binding_model():
