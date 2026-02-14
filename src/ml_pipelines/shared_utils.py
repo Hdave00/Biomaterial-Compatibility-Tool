@@ -98,15 +98,13 @@ def load_smiles_to_fingerprints(smiles_series, n_bits=2048, save_bad_log=True):
     Converts a pandas Series of SMILES strings into RDKit Morgan fingerprints
     using the modern rdFingerprintGenerator API.
 
-    Improvements:
     - Replaces polymer placeholders '*' with 'C' (to retain valid structure).
-    - Guarantees consistent (n_samples, n_bits) output shape.
+    - consistent (n_samples, n_bits) output shape.
     - Skips and logs all-zero fingerprints (invalid/fragmentary SMILES).
     - Prevents mean/scale shape mismatch and tf retracing warnings.
     """
 
     log = logging.getLogger(__name__)
-    from rdkit.Chem import rdFingerprintGenerator
 
     gen = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=n_bits)
     bad_smiles, zero_fp_smiles, fps = [], [], []
@@ -234,6 +232,7 @@ def predict_batch(input_dicts):
     
 
 def structure_features_dict(num_residues, num_chains, helix, sheet, coil, mol_weight):
+    
     return {
         "Number of Residues": num_residues,
         "Number of Chains": num_chains,

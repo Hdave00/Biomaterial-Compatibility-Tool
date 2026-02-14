@@ -109,6 +109,7 @@ def load_polymer_tg_model():
 
 
 def predict_polymer_tg(model_bundle, smiles_str):
+    
     if Chem is None:
         raise ImportError("RDKit must be installed.")
 

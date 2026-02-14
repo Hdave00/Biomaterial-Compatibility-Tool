@@ -71,6 +71,8 @@ where xi, Vi, and Ei are the atomic fraction, molar volume, and Young’s modulu
 - N content (wppm): Measured nitrogen content.
 - C content (wppm): Measured carbon content.
 
+5. 
+
 
 ---
 

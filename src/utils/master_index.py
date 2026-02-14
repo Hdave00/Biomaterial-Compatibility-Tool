@@ -1,9 +1,11 @@
-# utils/master_index.py
+# src/utils/master_index.py
 import pandas as pd
 import hashlib
 
 def create_material_index(mechanical, chemical, biological):
+
     """Create a master index linking all unique materials"""
+    
     materials = set()
 
     # Collect material names from all datasets

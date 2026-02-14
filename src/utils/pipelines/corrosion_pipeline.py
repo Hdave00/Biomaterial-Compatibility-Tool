@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# src/utils/pipelines
 """
 corrosion_pipeline.py
 
@@ -35,14 +35,17 @@ LETTER_MAP = {
     "F": 0.0
 }
 
+
 def parse_rating_or_rate(value: str) -> float:
+
     """
     Accept strings like:
       - 'D (Poor)'
       - '0.05 max'
       - numeric mm/yr or '0.002 in/yr' (we try mm/yr)
-    Return a normalized numeric corrosion_rate_mm_per_yr if possible; otherwise np.nan
+    Return a normalized numeric corrosion_rate_mm_per_yr if possible, otherwise np.nan
     """
+
     if pd.isna(value):
         return np.nan
     s = safe_str(value).strip()
@@ -74,8 +77,11 @@ def parse_rating_or_rate(value: str) -> float:
     # if 'mm' present or no unit, assume the number is mm/yr
     return num
 
+
 def rating_to_score(letter_or_text: str) -> float:
+
     """Convert letter rating A-D to 0..1 score; if numeric text provided, returns nan."""
+
     if pd.isna(letter_or_text):
         return np.nan
     s = safe_str(letter_or_text).upper()
@@ -91,10 +97,14 @@ def rating_to_score(letter_or_text: str) -> float:
             return np.nan
     return np.nan
 
+
 def mmrate_to_score(rate_mm_per_yr: float) -> float:
+
     """Convert mm/yr numeric corrosion rate into a 0..1 score (lower rate -> closer to 1)."""
+
     if pd.isna(rate_mm_per_yr):
         return np.nan
+    
     # clamp extremely large values
     r = max(rate_mm_per_yr, 0.0)
     # use a log transform and asymptote
@@ -106,7 +116,9 @@ def mmrate_to_score(rate_mm_per_yr: float) -> float:
     except Exception:
         return np.nan
 
+
 def run_corrosion_pipeline():
+
     log.info("Starting corrosion pipeline...")
     if not INPUT_FILE.exists():
         log.error("Corrosion input file not found: %s", INPUT_FILE)
@@ -126,6 +138,7 @@ def run_corrosion_pipeline():
                 "Rate (mm/yr) or Rating","Rate (mils/yr) or Rating",
                 "Localized Attack","UNS","Condition/Comment","Concentration (Vol %)",
                 "Temperature (deg C)","Temperature (deg F)","Duration","Reference #","Reference"]
+    
     for col in expected:
         if col not in df.columns:
             df[col] = None
@@ -141,6 +154,7 @@ def run_corrosion_pipeline():
 
     # For each row compute a corrosion score: prefer numeric rate if present, else letter rating score
     def row_score(row):
+        
         if not pd.isna(row["rate_mm"]):
             return mmrate_to_score(float(row["rate_mm"]))
         if not pd.isna(row["rating_score"]):

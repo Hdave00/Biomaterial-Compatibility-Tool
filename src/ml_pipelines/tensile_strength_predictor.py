@@ -45,9 +45,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 from keras import layers, models, callbacks, optimizers
 
-# -----------------------------
-# CONFIG
-# -----------------------------
+# CONFIG    -----------------------------
 
 DATA_PATH = "data/materials_data/material.csv"
 
@@ -65,9 +63,8 @@ os.makedirs(PLOT_DIR, exist_ok=True)
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
-# -----------------------------
-# LOAD & CLEAN
-# -----------------------------
+
+# LOAD & CLEAN  -----------------------------
 
 def load_and_prepare_data():
     df = pd.read_csv(DATA_PATH)
@@ -88,9 +85,8 @@ def load_and_prepare_data():
     log.info(f"Training using {len(X)} samples")
     return X, y, feature_cols, target_cols
 
-# -----------------------------
-# RANDOM FOREST MODEL
-# -----------------------------
+
+# RANDOM FOREST MODEL   -----------------------------
 
 def train_random_forest(X_train, X_test, y_train, y_test):
     rf = RandomForestRegressor(n_estimators=300, random_state=42, n_jobs=-1)
@@ -106,9 +102,8 @@ def train_random_forest(X_train, X_test, y_train, y_test):
     log.info(f"Saved Random Forest → {MODEL_RF_PATH}")
     return y_pred
 
-# -----------------------------
-# CORRECTED MLP MODEL
-# -----------------------------
+
+# CORRECTED MLP MODEL   -----------------------------
 
 def build_mlp(n_in, h1=128, h2=64, dropout=0.2, lr=1e-3):
     model = models.Sequential([
@@ -234,7 +229,7 @@ if __name__ == "__main__":
             filename=f"{PLOT_DIR}/tensile_residual_{col}.png"
         )
 
-    # Optional: MAPE / Accuracy summary
+    # MAPE (mean absolute percentage error) / Accuracy summary
     for i, col in enumerate(target_cols):
         mape = mean_absolute_percentage_error(y_test.iloc[:, i], mlp_preds[:, i]) * 100
         acc = 100 - mape

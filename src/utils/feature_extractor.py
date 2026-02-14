@@ -8,10 +8,11 @@ datapoints from each csv mentioned below, would be an amazing generalization for
 what material, with what type of micro-structures is suitably non-toxic for which bio-environment.
 """
 
-# utils/feature_extractor.py
+# src/utils/feature_extractor.py
 import pandas as pd
 
 class FeatureExtractor:
+
     def __init__(self, mechanical_df, chemical_df, biological_df, master_index):
         self.mechanical = mechanical_df
         self.chemical = chemical_df
@@ -42,7 +43,9 @@ class FeatureExtractor:
         }
 
     def get_training_matrix(self):
+
         """Return X, y ready for neural network training"""
+        
         X_mech, X_chem, X_bio, y = [], [], [], []
 
         for _, row in self.master_index.iterrows():
