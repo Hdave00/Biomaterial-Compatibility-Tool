@@ -21,14 +21,14 @@ By combining inter-related domains that are highly relevant and co-dependant on 
 It comprises of being able to provide cleaned datasets for query and data visualization, machine learning models for predictions and live compatibility confirmations accross all 3 domains. 
 
 **Important Note:**
-The proof-of-concept nature of this project means that it has grown exponentially after more development and effort. Streamlit is no longer able to support the upscaling and growth. As a result, I have made an effort to reconstruct the project on a framework that can support the architecture. Development for a "full-stack" framework of this version has begun and will be using the following software stack:
-- **Django** for the backend (to handle user login, ORM and documentation for personal notebooks and dataset tracking) and ML operations.
+The proof-of-concept nature of this project means that it has grown exponentially after more development and effort. Streamlit is no longer able to support the upscaling and growth. As a result, I have made an effort to reconstruct the project on a framework that can support the architecture. The added functionality would add custom dataset upload for both public and private domains, the ability to choose parameters for those datasets in order to create a custom ML model for that dataset whether it is your own code or a preset training method based on mathematical and statistical formulas (eg; protein fold algorithms, youngs modulus determination.) to enable much wider usability of the platform. Development for a "full-stack" framework of this version has begun and will be using the following software stack:
+- **Django** for the backend (to handle user login, ORM and documentation for personal notebooks and personal dataset tracking) and ML operations.
 - **React framework** for the frontend UI and most visualisation frameworks & tasks
 - **PostgreSQL** to support much larger training data and query data server side, along with user-uploadable datasets for training.
 - **FastAPI** as a microservice, to enable much faster and seamless ML model inference. 
 - **Celery (& Redis)** for user-enabled csv uploads (long jobs), and notifications.
 
-This is but a fraction of what those 3 "parent domains" are concerned with, there is much more to each one of those domains. For example, Biotechnology has sub domains in more than just the medical sense, the emergence of novel food sciences and sustainable advances in lab farming for better yeilds in the challenging climate we face today, are also due to the immense efforts made by people in that field, and that domain too could be integrated in such a platform to streamline research and create relevant tools which could greatly aid that particular domain of research and other adjacent domains.
+This is but a fraction of what those 3 "parent domains" are concerned with. There is much more to each one of those domains. For example, Biotechnology has sub domains in more than just the medical sense, the emergence of novel food sciences and sustainable advances in lab farming for better yeilds in the challenging climate we face today, are also due to the immense efforts made by people in that field, and that domain too could be integrated in such a platform to streamline research and create relevant tools which could greatly aid that particular domain of research and other adjacent domains.
 
 
 ---
