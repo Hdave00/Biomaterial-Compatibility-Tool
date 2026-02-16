@@ -23,10 +23,10 @@ It comprises of being able to provide cleaned datasets for query and data visual
 **Important Note:**
 The proof-of-concept nature of this project means that it has grown exponentially after more development and effort. Streamlit is no longer able to support the upscaling and growth (this application will still be active until the new architecture on Django is released). As a result, I have made an effort to reconstruct the project on a framework that can support the architecture. The added functionality would add custom dataset upload for both public and private domains, the ability to choose parameters for those datasets in order to create a custom ML model for that dataset whether it is your own code or a preset training method based on mathematical and statistical formulas (eg; protein fold algorithms, youngs modulus determination.) to enable much wider usability of the platform. Development for a "full-stack" framework of this version has begun and will be using the following software stack:
 - **Django** for the backend (to handle user login, ORM and documentation for personal notebooks and personal dataset tracking) and ML operations.
-- **React framework** for the frontend UI and most visualisation frameworks & tasks
+- **React via CDN** for the frontend UI and most visualisation frameworks & tasks.
 - **PostgreSQL** to support much larger training data and query data server side, along with user-uploadable datasets for training.
 - **FastAPI** as a microservice, to enable much faster and seamless ML model inference. 
-- **Celery (& Redis)** for user-enabled csv uploads (long jobs), and notifications.
+- **Celery (& Redis)** for user-enabled csv upload tasks (asynchronous processing and other batch processes running in the background), and notifications.
 
 This is but a fraction of what those 3 "parent domains" are concerned with. There is much more to each one of those domains. For example, Biotechnology has sub domains in more than just the medical sense, the emergence of novel food sciences and sustainable advances in lab farming for better yeilds in the challenging climate we face today, are also due to the immense efforts made by people in that field, and that domain too could be integrated in such a platform to streamline research and create relevant tools which could greatly aid that particular domain of research and other adjacent domains.
 
@@ -66,6 +66,8 @@ The datasets for this project can be found mainly at [Kaggle](https://www.kaggle
 These novel materials break the traditional logic of materials in a quite a fundamental way, and allow us to change the approach to how we view materials. For example, HEA can be hard, but not really brittle, rather flexible. Metal that can be ductile enough to conform into shape, but be able to score tempered glass. Some HEA can even be created in a specific environment with specific methods to even be Super-Paramagnetic or also be tuned to become Nano particle Catalysts. This is why, it is important to consider HEA and design the material ML pipeline to infer and predict the properties of such materials in various contexts.
 
 5. [Alloy Dataset](https://www.kaggle.com/datasets/sohamumbare/alloy-dataset/data) is a very detailed and homogenous dataset that comprises mainly of the alloy's industrial name and formal name, along with its composition. This is a complete dataset that is used both in the lookup database and in the Deep Learning architecture, to predict the young's modulus of a metal. This dataset is first cleaned (if needed) then, merged with other datasets and formatted similarly, null values/missing columns are dropped and then integrated into the young's modulus ML pipeline. 
+
+6. [Extra dataset with SMILES,Tg,PID,Polimers Class](https://www.kaggle.com/datasets/linyeping/extra-dataset-with-smilestgpidpolimers-class) and [polymer_tg_density_excerpt](https://www.kaggle.com/datasets/oleggromov/polymer-tg-density-excerpt/data) for different polymers, the SMILES label and other important properties to aid in both, lookup for querying the data, and normalising the two datasets into one, for ML prediction tasks.
 
 
 
