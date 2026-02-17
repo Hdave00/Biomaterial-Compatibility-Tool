@@ -67,7 +67,7 @@ These novel materials break the traditional logic of materials in a quite a fund
 
 5. [Alloy Dataset](https://www.kaggle.com/datasets/sohamumbare/alloy-dataset/data) is a very detailed and homogenous dataset that comprises mainly of the alloy's industrial name and formal name, along with its composition. This is a complete dataset that is used both in the lookup database and in the Deep Learning architecture, to predict the young's modulus of a metal. This dataset is first cleaned (if needed) then, merged with other datasets and formatted similarly, null values/missing columns are dropped and then integrated into the young's modulus ML pipeline. 
 
-6. [Extra dataset with SMILES,Tg,PID,Polimers Class](https://www.kaggle.com/datasets/linyeping/extra-dataset-with-smilestgpidpolimers-class) and [polymer_tg_density_excerpt](https://www.kaggle.com/datasets/oleggromov/polymer-tg-density-excerpt/data) for different polymers, the SMILES label and other important properties to aid in both, lookup for querying the data, and normalising the two datasets into one, for ML prediction tasks.
+6. [Extra dataset with SMILES,Tg,PID,Polimers Class](https://www.kaggle.com/datasets/linyeping/extra-dataset-with-smilestgpidpolimers-class) and [polymer_tg_density_excerpt](https://www.kaggle.com/datasets/oleggromov/polymer-tg-density-excerpt/data) for different polymers, the SMILES label and other important properties to aid in both, lookup for querying the data, and normalising the two datasets into one, for ML prediction tasks. These are two different datasets with different data types, that are merged for usage. 
 
 
 
