@@ -44,7 +44,7 @@ feature_cols = [
     "Stoichiometry",
 ]
 
-# Drop missing
+# Drop missing features
 df = df.dropna(subset=feature_cols + ["Oligomeric State", "Oligomeric Count"])
 
 # Encode categorical features if needed
