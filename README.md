@@ -76,6 +76,10 @@ These novel materials break the traditional logic of materials in a quite a fund
 - Crystallization Condition Prediction
 - Protein-Protein Interaction Prediction (how a protein interacts with other proteins, or if the protein changes form when interacting with other proteins)
 
+8. [Material Corrosion Dataset](https://catalog.data.gov/dataset/corr-data-f703c) is used for the live lookup feature. This is an important dataset as it encapsulates very crucial data about corrosion in metals, when observed in various different mediums. This is a dataset that is more "referential" than deterministic i.e., its more of a reference point for evaluation (primary or secondary) and approximation of a given metal object, in _X_ medium, exposed to _Y_ stresses for _Z_ amount of time, rather than a dataset that can be used for prediction, think of it as a measuring tape for construction, ie, it can be used to assess individual objects but cannot give the whole picture. The reason this dataset was not used in any sort of ML application or pipeline is simply due to the fact that corrosion is quite a "stochastic" process, and it's behaviour and exhibited properties can deviate greatly, with miniscule changes in variables, be it environmental or otherwise. It's more to be used as a comparison guage, as is reflected by it's visualisation when queried, using PyPlot. Critical decision making in this domain is quite the difficult task, due to the unreliable nature of ML algorithms that can meaningfully connect multiple (niche) domain specific datapoints.  
+
+9. 
+
 
 
 ---

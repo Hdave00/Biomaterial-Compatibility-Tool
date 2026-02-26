@@ -39,14 +39,20 @@ def safe_str(x):
     return "" if pd.isna(x) else str(x)
 
 def parse_numeric_cc50(value: str) -> Optional[float]:
+
     """Reuse same parsing approach as biological pipeline to extract numeric mM value (conservative lower bound)."""
+
     if pd.isna(value):
         return None
+    
     v = safe_str(value).strip()
     if v == "":
         return None
+    
+    # 
     v = re.sub(r"[,\s]*\(.+?\)", "", v)
     v = v.replace(",", "").replace("–", "-").replace("—", "-")
+
     # inequality
     if v.startswith(">") or v.startswith("<"):
         try:
@@ -141,9 +147,12 @@ def parse_and_combine():
     return pd.DataFrame(rows)
 
 def aggregate_to_compound(df):
+
     """Aggregate multiple assays per compound. Conservative (worst-case) logic: if any test is toxic, mark toxic."""
+
     if df.empty:
         return pd.DataFrame()
+    
     # compute worst (min CC50)
     agg = df.groupby("Canonical_SMILES", dropna=False).agg({
         "CC50_mM": lambda s: s.dropna().min() if s.dropna().size>0 else None,
@@ -157,6 +166,7 @@ def aggregate_to_compound(df):
         "HBA": "median",
         "AromaticRings": "median"
     }).reset_index().rename(columns={"source_file":"num_sources"})
+    
     # compute binary label via thresholds
     def label_from_cc(cc):
         if pd.isna(cc):
