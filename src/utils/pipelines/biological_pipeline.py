@@ -46,6 +46,7 @@ def safe_str(x):
     return "" if pd.isna(x) else str(x)
 
 def make_clean_name(s: str) -> str:
+
     if s is None:
         return ""
     s = safe_str(s).strip()
@@ -56,15 +57,17 @@ def make_clean_name(s: str) -> str:
     return s
 
 def parse_numeric_cc50(value: str) -> Optional[float]:
+
     """
     Parse a string value of CC50/IC50/EC50 and return numeric value in mM.
     Returns None if unparseable.
     Handles:
      - single numbers "12.5"
      - inequalities ">100", "<0.1"
-     - ranges "1-10", "0.5–2.0"
+     - ranges "1-10", "0.5-2.0"
      - values with units (assumes mM if no unit)
     """
+
     if pd.isna(value):
         return None
     v = str(value).strip()
@@ -105,12 +108,14 @@ def parse_numeric_cc50(value: str) -> Optional[float]:
         return None
 
 def classify_cc50_to_label(cc50_mM: Optional[float]) -> int:
+
     """
     Conservative mapping:
     - cc50 <= TOXIC_THRESHOLD_MILLIMOLAR -> 0 (toxic)
     - cc50 >= BIOCOMPATIBLE_THRESHOLD_MILLIMOLAR -> 1 (likely biocompatible)
     - otherwise -> -1 (uncertain)
     """
+
     if cc50_mM is None:
         return -1
     if cc50_mM <= TOXIC_THRESHOLD_MILLIMOLAR:
@@ -118,6 +123,7 @@ def classify_cc50_to_label(cc50_mM: Optional[float]) -> int:
     if cc50_mM >= BIOCOMPATIBLE_THRESHOLD_MILLIMOLAR:
         return 1
     return -1
+
 
 def load_methods():
     if METHODS_FILE.exists():
@@ -128,6 +134,7 @@ def load_methods():
             log.warning(f"Failed to load methods file: {e}")
     return pd.DataFrame()
 
+
 def load_cell_lines():
     if CELL_LINES_FILE.exists():
         try:
@@ -136,6 +143,7 @@ def load_cell_lines():
         except Exception as e:
             log.warning(f"Failed to load cell_lines file: {e}")
     return pd.DataFrame()
+
 
 def collect_cytotox_files() -> list:
     if not DATA_DIR.exists():
@@ -221,11 +229,12 @@ def parse_all_cytotox():
     return df_records, df_identity
 
 def aggregate_to_material_label(df_records: pd.DataFrame, cell_lines_df: pd.DataFrame):
+
     """
-    Aggregate measurements per material into one conservative label.
-    We focus on human cell lines (user chose all human cell lines).
-    We'll select the lowest CC50_mM measured on any human cell line (most conservative).
+    Aggregate measurements per material into one conservative label, we focus on human cell lines as the user chose all human cell lines.
+    Select the lowest CC50_mM measured on any human cell line (most conservative).
     """
+
     # Identify human cell line names from the cell_lines file
     human_cells = set()
     if not cell_lines_df.empty:
@@ -269,6 +278,7 @@ def aggregate_to_material_label(df_records: pd.DataFrame, cell_lines_df: pd.Data
     return pd.DataFrame(agg_rows)
 
 def run_biological_pipeline():
+    
     log.info("Starting biological pipeline...")
     df_records, df_identity = parse_all_cytotox()
 
