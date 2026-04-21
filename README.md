@@ -81,8 +81,6 @@ These novel materials break the traditional logic of materials in a quite a fund
 9. [Cytotoxicity of Ionic Liquids](https://www.nature.com/articles/s41597-024-04190-3) is currently used for a live lookup and visual data repsresentation feature. This dataset has extremely high quality data and documentation thereof. It contains extremely important and relevant data in terms of providing context to the researcher at the convergence of material science and cytotoxicity, as it is paramount to know how the difference ionic liquids in the human body themselves behave, affect and interact with not only each other, but also provide a broad scope of context when taking into account the chemical stability of each Ionic Liquid family and for example, how dense it is, how biologically active it is etc.
 This is why it is also the main dataset used for the QSAR Cytotoxicity prediction using a ML model to predict **cytotoxicity (CC50/IC50/EC50)** and **toxic probability** from molecular SMILES strings using those QSAR features and fingerprints from the dataset.
 
-
-
 ---
 
 ---
