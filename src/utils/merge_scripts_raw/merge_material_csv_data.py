@@ -57,6 +57,7 @@ def prefer_std_column(row):
     Return the standard: prefer the 'Std' column if present and non-empty,
     otherwise attempt to extract from the Material text (fallback).
     """
+    
     if "Std" in row and pd.notna(row["Std"]) and str(row["Std"]).strip() != "":
         return str(row["Std"]).strip().upper()
     

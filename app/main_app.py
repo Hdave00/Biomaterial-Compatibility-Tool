@@ -308,7 +308,7 @@ def run_ml_app():
 
         if submitted:
 
-            # STRICTLY MATCHES TRAINED FEATURE SET
+            # Match only trained feature set
             input_dict = {
                 "Shear_Modulus_GPa": shear_modulus,
                 "Poisson_Ratio": poisson,
@@ -320,14 +320,14 @@ def run_ml_app():
 
             st.success(f"### Predicted Young’s Modulus: **{result:.2f} GPa**")
 
-            # --- Summary table ---
+            # Summary table
             st.markdown("#### Input Summary")
             st.dataframe(
                 pd.DataFrame(input_dict.items(), columns=["Feature", "Value"]),
                 use_container_width=True
             )
 
-            # --- Comparison chart ---
+            # Comparison chart 
             st.markdown("#### Comparison with Common Materials")
             comparison_data = pd.DataFrame({
                 "Material": ["Predicted", "Steel", "Aluminum", "Titanium", "Copper", "Polymer"],
@@ -335,7 +335,7 @@ def run_ml_app():
             })
             st.bar_chart(comparison_data.set_index("Material"), height=300)
 
-            # --- Interpretation ---
+            # Interpretation
             st.markdown("#### Interpretation")
             if result < 10:
                 st.warning("This suggests a **soft polymeric or elastomeric material**.")
@@ -379,14 +379,14 @@ def run_ml_app():
 
                 st.success("Prediction complete!")
 
-                # --- Display Results ---
+                # Display Results
                 st.markdown("### QSAR Prediction Results")
                 st.metric("Predicted log(CC50)", f"{preds['log_CC50_pred']:.3f}")
                 st.metric("Predicted CC50 (mM)", f"{preds['CC50_mM_pred']:.4f}")
                 st.metric("Toxicity Probability", f"{preds['prob_toxic']*100:.1f}%")
                 st.metric("Predicted Class", "Toxic" if preds["toxic_label_pred"] else "Non-Toxic")
 
-                # --- Descriptor Table ---
+                # Descriptor Table
                 desc_df = pd.DataFrame({
                     "Descriptor": ["MolWt_calc", "LogP_calc", "TPSA_calc"],
                     "Value": [preds["MolWt_calc"], preds["LogP_calc"], preds["TPSA_calc"]],
@@ -394,7 +394,7 @@ def run_ml_app():
                 st.markdown("### Molecular Descriptors")
                 st.dataframe(desc_df, use_container_width=True)
 
-                # --- Visualization ---
+                # Visualization
                 import matplotlib.pyplot as plt
                 fig, ax = plt.subplots()
                 ax.bar(["Toxic", "Non-Toxic"], [preds["prob_toxic"], 1 - preds["prob_toxic"]])
@@ -414,7 +414,7 @@ def run_ml_app():
                 st.error(f"Prediction failed: {e}")
 
 
-    # Oligomeric State predictor ----
+    #  ---- Oligomeric State predictor ----
     with tabs[4]:
         st.subheader("Protein Oligomeric State Predictor")
         st.markdown(
@@ -422,7 +422,7 @@ def run_ml_app():
             "**Important:** Inputs must be in the same units as used during training."
         )
 
-        # --- Load model bundle ---
+        # Load model bundle
         model_bundle = oligomer_model  # dict returned by load_oligomeric_state_model()
 
         if model_bundle is None or "model" not in model_bundle:
@@ -435,14 +435,14 @@ def run_ml_app():
             if not scaler_obj or not encoder_obj:
                 st.error("Scaler or encoder not loaded properly.")
             else:
-                # --- Feature names and defaults from scaler ---
+                # Feature names and defaults from scaler
                 feature_names = list(scaler_obj.feature_names_in_)
                 mean_values = scaler_obj.mean_
                 std_values = scaler_obj.scale_
 
                 feature_dict = {}
 
-                # --- Generate input fields ---
+                # Generate input fields
                 for i, f in enumerate(feature_names):
                     if f in ["Number of Chains", "Stoichiometry"]:
                         min_val = max(1, int(round(mean_values[i] - 3*std_values[i])))
@@ -459,13 +459,13 @@ def run_ml_app():
                             f, min_value=min_val, max_value=max_val, value=value
                         )
 
-                # --- Predict button ---
+                # Predict button
                 if st.button("Predict Oligomeric State"):
                     with st.spinner("Running model..."):
                         # Predict using helper function
                         result = predict_oligomeric_state(model_bundle, feature_dict)
 
-                    # --- Display results ---
+                    # Display results
                     st.success(f"Predicted State: **{result['Predicted_state']}**")
                     if result["Predicted_count"] is not None:
                         st.metric("Predicted Oligomeric Count", result["Predicted_count"])
@@ -522,7 +522,7 @@ def run_ml_app():
             Su = result["Su"]
             Sy = result["Sy"]
 
-            # --- MAIN OUTPUT ---
+            # Main putput
             st.success(
                 f"""
                 ### Prediction Results
@@ -531,14 +531,14 @@ def run_ml_app():
                 """
             )
 
-            # --- INPUT SUMMARY TABLE ---
+            # Input summary table (what was given as input just organised more)
             st.markdown("#### Input Summary")
             st.dataframe(
                 pd.DataFrame(input_dict.items(), columns=["Feature", "Value"]),
                 use_container_width=True
             )
 
-            # --- COMPARISON BAR CHART ---
+            # bar chart for quick comparison (referene basically)
             st.markdown("#### Comparison with Common Engineering Materials")
 
             comparison_df = pd.DataFrame({
@@ -549,7 +549,7 @@ def run_ml_app():
 
             st.bar_chart(comparison_df.set_index("Material"), height=350)
 
-            # --- ENGINEERING INTERPRETATION ---
+            # Engineering interpretation (context in terms of engineering)
             st.markdown("#### Engineering Interpretation")
 
             if Su < 150:
