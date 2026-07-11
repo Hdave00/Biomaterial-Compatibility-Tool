@@ -101,6 +101,7 @@ The Young's Modulus prediction works by combining the values from the *unified_m
 2. Hardness (BHN)
 3. Poisson’s Ratio
 4. Shear Modulus (GPa) 
+
 These are some of the most important factors when trying to predict Young's Modulus with the best generalised accuracy for materials in general, and as such, the model for Young's Modulus was trained using 2 sub methods/algorithms of Regression namely, **KNN (K Neighbours Regression)** and **RandomForest regression**. Each time he script for training a ML model runs, it creates a test/train split **using both methods (inclusive)** and depending on the data type, the more accurate of the trained models gets chosen to do the inference.  
 
 Once the model has predicted a Young's Modulus calculation in *GPa*, it then also provides a **summary table**, **comparison chart** to known similar youngs modulus materials and a context based interpretation of the materials predicted properties as **compared to a family of materials** eg; soft polymeric, alloys or composites, metallic alloy or ceramic etc.
