@@ -35,7 +35,7 @@ This is but a fraction of what those 3 aforementioned "parent domains" are conce
 
 Platform is live on Streamlit!
 
-[Visit The app on Streamlit](hhttps://biomaterial-tool.streamlit.app/)
+[Visit The app on Streamlit](https://biomaterial-tool.streamlit.app/)
 
 ---
 
